@@ -16,8 +16,7 @@ class SpreadSheet:
         if value.startswith("'") and value.endswith("'"):
             return value.strip("'")
         try:
-            num = int(value)
-            return num
+            return int(value)
         except ValueError:
             return "#Error"
 
