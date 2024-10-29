@@ -24,11 +24,13 @@ class SpreadSheet:
         elif value.startswith("="):
             if value[1:].isnumeric():
                 result = int(value[1:])
-            elif value[1:].isalpha() and len(value) == 2:  # Simple reference like B1, A2
-                ref_value = self.evaluate(value[1:])
-                result = ref_value if isinstance(ref_value, int) else "#Error"
             else:
-                result = "#Error"
+                # Check if it's a valid cell reference
+                ref_value = self.evaluate(value[1:])
+                if isinstance(ref_value, int):
+                    result = ref_value
+                else:
+                    result = "#Error"
         else:
             try:
                 result = int(value)
