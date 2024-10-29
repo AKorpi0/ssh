@@ -13,3 +13,8 @@ class TestSpreadSheet(TestCase):
         ss = SpreadSheet()
         ss.set("A", "5,6")
         self.assertEqual("#Error", ss.evaluate("A"))
+
+    def test_eval_strings(self):
+        ss = SpreadSheet()
+        ss.set("A", "'Apple'")
+        self.assertEqual("Apple", ss.evaluate("A"))
