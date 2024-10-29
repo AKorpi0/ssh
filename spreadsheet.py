@@ -1,9 +1,8 @@
 
 class SpreadSheet:
-
     def __init__(self):
         self._cells = {}
-        self._evaluating = set()
+        self._evaluating = set()  # To track cells currently being evaluated
 
     def set(self, cell: str, value: str) -> None:
         self._cells[cell] = value
@@ -13,10 +12,11 @@ class SpreadSheet:
 
     def evaluate(self, cell: str) -> int | str:
         if cell in self._evaluating:
-            return "#Error"
-        self._evaluating.add(cell)
+            return "#Circular"
         
+        self._evaluating.add(cell)
         value = self.get(cell)
+        
         if value.startswith("='") and value.endswith("'"):
             result = value[2:-1]
         elif value.startswith("'") and value.endswith("'"):
@@ -24,19 +24,21 @@ class SpreadSheet:
         elif value.startswith("="):
             if value[1:].isnumeric():
                 result = int(value[1:])
+            elif value[1:].replace('.', '', 1).isdigit():  # Check if it's a float
+                result = "#Error"
             else:
                 # Check if it's a valid cell reference
                 ref_value = self.evaluate(value[1:])
                 if isinstance(ref_value, int):
                     result = ref_value
                 else:
-                    result = "#Error"
+                    result = ref_value
         else:
             try:
                 result = int(value)
             except ValueError:
                 result = "#Error"
-        
+
         self._evaluating.remove(cell)
         return result
 

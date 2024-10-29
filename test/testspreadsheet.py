@@ -56,3 +56,9 @@ class TestSpreadSheet(TestCase):
         ss.set("B1", "42.5")
         self.assertEqual("#Error", ss.evaluate("A"))
 
+    def test_eval_reference_formula_circular(self):
+        ss = SpreadSheet()
+        ss.set("A1", "=B1")
+        ss.set("B1", "=A1")
+        self.assertEqual("#Circular", ss.evaluate("A1"))
+
