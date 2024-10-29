@@ -29,3 +29,8 @@ class TestSpreadSheet(TestCase):
         ss.set("A", "='Apple'")
         self.assertEqual("Apple", ss.evaluate("A"))
 
+    def test_eval_formula_num(self):
+        ss = SpreadSheet()
+        ss.set("A", "=1")
+        self.assertEqual("1", ss.evaluate("A"))
+
