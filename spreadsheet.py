@@ -12,18 +12,29 @@ class SpreadSheet:
         return self._cells.get(cell, '')
 
     def evaluate(self, cell: str) -> int | str:
-        value = self._cells[cell]
-        if value.startswith("='") and value.endswith("'"):
-            return value[2:-1]
-        elif value.startswith("'") and value.endswith("'"):
-            return value[1:-1]
-        elif value.startswith("="):
-            try:
-                return int(value[1:])
-            except ValueError:
-                return "#Error"
-        try:
-            return int(value)
-        except ValueError:
+        if cell in self._evaluating:
             return "#Error"
+        self._evaluating.add(cell)
+        
+        value = self.get(cell)
+        if value.startswith("='") and value.endswith("'"):
+            result = value[2:-1]
+        elif value.startswith("'") and value.endswith("'"):
+            result = value[1:-1]
+        elif value.startswith("="):
+            if value[1:].isnumeric():
+                result = int(value[1:])
+            elif value[1:].isalpha() and len(value) == 2:  # Simple reference like B1, A2
+                ref_value = self.evaluate(value[1:])
+                result = ref_value if isinstance(ref_value, int) else "#Error"
+            else:
+                result = "#Error"
+        else:
+            try:
+                result = int(value)
+            except ValueError:
+                result = "#Error"
+        
+        self._evaluating.remove(cell)
+        return result
 

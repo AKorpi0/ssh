@@ -44,3 +44,9 @@ class TestSpreadSheet(TestCase):
         ss.set("A", "=Apple'")
         self.assertEqual("#Error", ss.evaluate("A"))
 
+    def test_eval_reference_formula_error(self):
+        ss = SpreadSheet()
+        ss.set("A", "=B1'")
+        ss.set("B1", "=42'")
+        self.assertEqual(42, ss.evaluate("A"))
+
