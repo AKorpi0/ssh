@@ -67,3 +67,8 @@ class TestSpreadSheet(TestCase):
         ss.set("A1", "=1+3")
         self.assertEqual(4, ss.evaluate("A1"))
 
+
+    def test_evaluate_formula_operators_error(self):
+        ss = SpreadSheet()
+        ss.set("A1", "=1+3.5")
+        self.assertEqual("#Error", ss.evaluate("A1"))

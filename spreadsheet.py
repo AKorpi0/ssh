@@ -11,7 +11,7 @@ class SpreadSheet:
     def get(self, cell: str) -> str:
         return self._cells.get(cell, '')
 
-    def evaluate(self, cell: str) -> int | str:
+    def evaluate(self, cell: str) -> int | str | float:
         if cell in self._evaluating:
             return "#Circular"
         self._evaluating.add(cell)
@@ -29,7 +29,11 @@ class SpreadSheet:
             else:
                 try:
                     # Evaluate the expression safely
-                    result = eval(expr, {"__builtins__": None}, self._cells)
+                    result = eval(expr, {"__builtins__": None}, {k: self.evaluate(k) for k in self._cells})
+                    if isinstance(result, int):
+                        result = int(result)  # Allow float results directly
+                    else:
+                        result = "#Error"
                 except:
                     result = "#Error"
         else:
