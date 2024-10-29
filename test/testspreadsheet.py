@@ -83,3 +83,9 @@ class TestSpreadSheet(TestCase):
         ss = SpreadSheet()
         ss.set("A1", "=1+3*2")
         self.assertEqual(7, ss.evaluate("A1"))
+
+    def test_evaluate_formula_operators_reference(self):
+        ss = SpreadSheet()
+        ss.set("A1", "=1+B1")
+        ss.set("B1", "3")
+        self.assertEqual(4, ss.evaluate("A1"))
