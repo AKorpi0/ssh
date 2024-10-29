@@ -62,3 +62,8 @@ class TestSpreadSheet(TestCase):
         ss.set("B1", "=A1")
         self.assertEqual("#Circular", ss.evaluate("A1"))
 
+    def test_evaluate_formula_operators(self):
+        ss = SpreadSheet()
+        ss.set("A1", "=1+3")
+        self.assertEqual(4, ss.evaluate("A1"))
+
