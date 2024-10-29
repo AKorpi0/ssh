@@ -32,5 +32,10 @@ class TestSpreadSheet(TestCase):
     def test_eval_formula_num(self):
         ss = SpreadSheet()
         ss.set("A", "=1")
-        self.assertEqual("1", ss.evaluate("A"))
+        self.assertEqual(1, ss.evaluate("A"))
+
+    def test_eval_formula_error(self):
+        ss = SpreadSheet()
+        ss.set("A", "='Apple")
+        self.assertEqual("#Error", ss.evaluate("A"))
 

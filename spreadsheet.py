@@ -21,7 +21,7 @@ class SpreadSheet:
             try:
                 return int(value[1:])
             except ValueError:
-                return value[1:]
+                return "#Error"
         try:
             return int(value)
         except ValueError:
