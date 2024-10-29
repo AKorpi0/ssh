@@ -11,4 +11,7 @@ class SpreadSheet:
         return self._cells.get(cell, '')
 
     def evaluate(self, cell: str) -> int | str:
-        return int(self._cells[cell])
+        try:
+            return int(self._cells[cell])
+        except:
+            return "#Error"
