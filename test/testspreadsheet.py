@@ -95,3 +95,10 @@ class TestSpreadSheet(TestCase):
         ss.set("A1", "=1+B1")
         ss.set("B1", "3.1")
         self.assertEqual("#Error", ss.evaluate("A1"))
+
+    def test_evaluate_formula_operators_reference_Circular(self):
+        #Make sure the circular error comes through. expression evaluation can have 2x #Circular and still return #Error
+        ss = SpreadSheet()
+        ss.set("A1", "=1+B1")
+        ss.set("B1", "=A1")
+        self.assertEqual("#Circular", ss.evaluate("A1"))
